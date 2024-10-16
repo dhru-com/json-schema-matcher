@@ -1,5 +1,6 @@
 
 const { matchSchema } = require('./index');
+const { validateSchema } = require('./index');
 
 // Test case 1: Matching basic schema
 const response1 = {
@@ -18,6 +19,7 @@ const schema1 = {
     }
 };
 
+console.log('Test 1 Validate Schema (should be true):', validateSchema(schema1)) ; // Should return true
 console.log('Test 1 (should be true):', matchSchema(response1, schema1)); // Should return true
 
 // Test case 2: Matching nested and array values

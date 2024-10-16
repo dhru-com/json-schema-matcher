@@ -16,6 +16,36 @@ const operations = {
 };
 
 /**
+ * Independent validation of the schema, ensuring:
+ * - At least one path exists.
+ * - Operators in the schema are valid (from the operations object).
+ * @param {Object} schema - The schema object to validate.
+ * @returns {Object} - Returns an object containing `isValid` (true/false) and an `errors` array.
+ */
+function validateSchema(schema) {
+    const errors = [];
+
+    // Check if at least one path exists
+    if (!schema.path || Object.keys(schema.path).length === 0) {
+        errors.push("At least one path is required in the schema.");
+    }
+
+    // Validate operators for each path using the keys from the operations object
+    Object.entries(schema.path || {}).forEach(([path, conditions]) => {
+        Object.keys(conditions).forEach(operator => {
+            if (!operations.hasOwnProperty(operator)) {
+                errors.push(`Unsupported operator "${operator}" used in path "${path}".`);
+            }
+        });
+    });
+
+    return {
+        isValid: errors.length === 0,
+        errors
+    };
+}
+
+/**
  * Evaluates a condition based on the provided actual value and the expected condition using defined operations.
  *
  * @param {any} actualValue - The actual value from the response object.
@@ -42,6 +72,13 @@ function matchCondition(actualValue, condition, response) {
  * @returns {boolean} - True if the response matches the schema according to the specified mode.
  */
 function matchSchema(response, schema) {
+    // First, validate the schema
+    // const validation = validateSchema(schema);
+    // if (!validation.isValid) {
+    //     console.error("Schema validation failed:", validation.errors);
+    //     return false;
+    // }
+
     const mode = schema.match || "all";  // Default match mode is "all"
     const paths = schema.path || {};
 
@@ -77,4 +114,4 @@ function getValueByPath(obj, path) {
     }, obj);
 }
 
-module.exports = { matchSchema, getValueByPath, matchCondition };
+module.exports = { matchSchema , validateSchema, getValueByPath, matchCondition };
