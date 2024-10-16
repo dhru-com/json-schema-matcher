@@ -1,8 +1,9 @@
 {
   "name": "json-template-matcher",
-  "version": "1.0.1",
-  "description": "json path  matcher with dynamic template",
+  "version": "2.0.0",
+  "description": "A flexible JSON schema matcher for validating API responses using full operator names.",
   "main": "index.js",
+  "keywords": ["json", "schema", "matcher", "validation"],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

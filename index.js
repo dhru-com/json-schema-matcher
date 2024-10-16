@@ -3,20 +3,30 @@ const operations = {
     greaterThan: (actual, expected) => actual > expected,
     lessThan: (actual, expected) => actual < expected,
     exists: (actual, expected) => (expected ? actual !== undefined : actual === undefined),
-    in: (actual, expected) => expected.includes(actual),
+    inList: (actual, expected) => Array.isArray(expected) ? expected.includes(actual) : false,
+    notInList: (actual, expected) => Array.isArray(expected) ? !expected.includes(actual) : false,
+    startsWith: (actual, expected) => typeof actual === 'string' && actual.startsWith(expected),
+    endsWith: (actual, expected) => typeof actual === 'string' && actual.endsWith(expected),
     notEquals: (actual, expected) => actual !== expected,
-    contains: (actual, expected) => actual.includes(expected),
+    orConditions: (actual, expected) => Array.isArray(expected) ? expected.some(condition => matchCondition(actual, condition)) : false,
+    andConditions: (actual, expected) => Array.isArray(expected) ? expected.every(condition => matchCondition(actual, condition)) : false,
+    referenceField: (actual, expected, response) => getValueByPath(response, expected) === actual, // Reference matching
+    notCondition: (actual, expected, response) => !matchCondition(actual, expected, response), // Negation of condition
 };
 
-/**
- * Match a template against a JSON response based on the match mode ("all" or "any").
- * @param {Object} response - The JSON object to be validated.
- * @param {Object} template - The matching template with paths, conditions, and match type.
- * @returns {boolean} - Returns true if the response matches based on the template mode.
- */
-function matchTemplate(response, template) {
-    const mode = template.match || "all"; // Default to "all" if not specified
-    const paths = template.path || {};
+function matchCondition(actualValue, condition, response) {
+    return Object.entries(condition).every(([operator, expected]) => {
+        if (!operations[operator]) {
+            console.error(`Error: Unsupported operator "${operator}" used.`);
+            return false;
+        }
+        return operations[operator](actualValue, expected, response);
+    });
+}
+
+function matchSchema(response, Schema) {
+    const mode = Schema.match || "all"; // Default to "all" if not specified
+    const paths = Schema.path || {};
 
     const results = Object.entries(paths).map(([path, condition]) => {
         const actualValue = getValueByPath(response, path);
@@ -26,13 +36,7 @@ function matchTemplate(response, template) {
             return false;
         }
 
-        return Object.entries(condition).every(([operator, expected]) => {
-            if (!operations[operator]) {
-                console.error(`Error: Unsupported operator "${operator}" used.`);
-                return false;
-            }
-            return operations[operator](actualValue, expected);
-        });
+        return matchCondition(actualValue, condition, response);
     });
 
     if (mode === "all") {
@@ -44,12 +48,6 @@ function matchTemplate(response, template) {
     return false;
 }
 
-/**
- * Helper function to retrieve value from a nested object using a path.
- * @param {Object} obj - The object to traverse.
- * @param {string} path - The dot-separated path to the value.
- * @returns {*} - The value at the specified path, or undefined if the path does not exist.
- */
 function getValueByPath(obj, path) {
     return path.split('.').reduce((acc, key) => {
         const arrayMatch = key.match(/^([a-zA-Z0-9_]+)\[(\d+)\]$/);
@@ -62,4 +60,4 @@ function getValueByPath(obj, path) {
     }, obj);
 }
 
-module.exports = { matchTemplate, getValueByPath };
+module.exports = { matchSchema, getValueByPath, matchCondition };
