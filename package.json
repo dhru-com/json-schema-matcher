@@ -1,0 +1,19 @@
+{
+  "name": "json-template-matcher",
+  "version": "1.0.1",
+  "description": "json path  matcher with dynamic template",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dhru-com/json-template-matcher.git"
+  },
+  "author": "Bhavanesh Vatalia",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dhru-com/json-template-matcher/issues"
+  },
+  "homepage": "https://github.com/dhru-com/json-template-matcher#readme"
+}
