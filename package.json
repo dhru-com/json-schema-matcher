@@ -1,6 +1,6 @@
 {
   "name": "json-schema-matcher",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "A flexible JSON schema matcher for validating API responses using full operator names.",
   "main": "index.js",
   "keywords": ["json", "schema", "matcher", "validation"],
@@ -9,12 +9,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dhru-com/json-template-matcher.git"
+    "url": "git+https://github.com/dhru-com/json-schema-matcher.git"
   },
   "author": "Bhavanesh Vatalia",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/dhru-com/json-template-matcher/issues"
+    "url": "https://github.com/dhru-com/json-schema-matcher/issues"
   },
-  "homepage": "https://github.com/dhru-com/json-template-matcher#readme"
+  "homepage": "https://github.com/dhru-com/json-schema-matcher#readme"
 }
