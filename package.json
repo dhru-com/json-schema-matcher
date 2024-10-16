@@ -1,6 +1,6 @@
 {
   "name": "json-schema-matcher",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "A flexible JSON schema matcher for validating API responses using full operator names.",
   "main": "index.js",
   "keywords": ["json", "schema", "matcher", "validation"],
