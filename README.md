@@ -3,7 +3,6 @@
 
 ![npm version](https://img.shields.io/npm/v/json-schema-matcher.svg)
 
-
 A flexible JSON schema matcher for validating API responses using full operator names.
 
 ## Installation
