@@ -1,5 +1,7 @@
 # JSON Template Matcher
 
+![npm version](https://img.shields.io/npm/v/json-template-matcher.svg)
+
 A flexible JSON template matcher for validating API responses using various operators such as `equals`, `greaterThan`, `lessThan`, `in`, `exists`, and more. This module allows you to define templates to match either **all** or **any** conditions in a JSON response.
 
 ## Installation
